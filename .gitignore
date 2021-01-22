@@ -1,4 +1,4 @@
-# Prerequisites
+ ># Prerequisites
 *.d
 
 # Compiled Object files
@@ -30,3 +30,11 @@
 *.exe
 *.out
 *.app
+
+# Build and install directories
+build/
+install/
+
+# External deps
+deps/libff/build/
+deps/libff/install/

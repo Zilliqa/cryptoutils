@@ -80,8 +80,12 @@ else()
     add_library(CryptoUtils STATIC)
 endif()
 
-include_directories(${PROJECT_SOURCE_DIR}/include)
-add_subdirectory (lib/ethash)
+include_directories(
+    ${PROJECT_SOURCE_DIR}/include
+    ${PROJECT_SOURCE_DIR}/deps/libff/install/include
+)
+add_subdirectory(lib/ethash)
+add_subdirectory(lib/Snark)
 
 install(
     TARGETS CryptoUtils
