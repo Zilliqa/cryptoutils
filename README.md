@@ -2,7 +2,8 @@
 
 ## Build
 Clone this repository with all of its submodules
-git clone --recurse-submodules https://github.com/Zilliqa/cryptoutils/
+
+- `git clone --recurse-submodules https://github.com/Zilliqa/cryptoutils/`
 
 Run `CMake` by providing a `CMAKE_INSTALL_PREFIX` argument to install it
 to a directory of your choice:
