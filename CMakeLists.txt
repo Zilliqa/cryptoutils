@@ -71,9 +71,9 @@ if (ENABLE_COVERAGE AND CMAKE_COMPILER_IS_GNUCXX)
     setup_target_for_coverage(${PROJECT_NAME}_coverage ctest coverage "-j2;--output-on-failure")
 endif()
 
-# Build shared libraries by default.
 link_directories(${PROJECT_SOURCE_DIR}/deps/libff/install/lib)
 
+# Build shared libraries by default.
 if (NOT CRYPTOUTILS_BUILD_ARCHIVE)
     message(STATUS "Building shared library ...")
     add_library(CryptoUtils SHARED)
