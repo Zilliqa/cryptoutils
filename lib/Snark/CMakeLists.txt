@@ -4,7 +4,8 @@
 include(CMakePackageConfigHelpers)
 include(GNUInstallDirs)
 
-cmake_policy(SET CMP0076 NEW)
 target_sources(CryptoUtils PUBLIC
     Snark.cpp
 )
+
+target_link_libraries(CryptoUtils ff)

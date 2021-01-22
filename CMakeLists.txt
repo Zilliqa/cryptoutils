@@ -1,4 +1,4 @@
-cmake_minimum_required(VERSION 3.5.1)
+cmake_minimum_required(VERSION 3.16.0)
 
 find_program(CCACHE_PROGRAM ccache)
 if(CCACHE_PROGRAM)
@@ -72,6 +72,8 @@ if (ENABLE_COVERAGE AND CMAKE_COMPILER_IS_GNUCXX)
 endif()
 
 # Build shared libraries by default.
+link_directories(${PROJECT_SOURCE_DIR}/deps/libff/install/lib)
+
 if (NOT CRYPTOUTILS_BUILD_ARCHIVE)
     message(STATUS "Building shared library ...")
     add_library(CryptoUtils SHARED)
