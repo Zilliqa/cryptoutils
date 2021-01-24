@@ -89,6 +89,7 @@ if (NOT CRYPTOUTILS_BUILD_ARCHIVE)
 else()
     message(STATUS "Building archive ...")
     add_library(CryptoUtils STATIC)
+    set_target_properties(CryptoUtils PROPERTIES POSITION_INDEPENDENT_CODE True)
 endif()
 
 include_directories(${PROJECT_SOURCE_DIR}/include)
