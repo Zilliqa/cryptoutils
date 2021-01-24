@@ -6,6 +6,8 @@ if(CCACHE_PROGRAM)
     set_property(GLOBAL PROPERTY RULE_LAUNCH_COMPILE "${CCACHE_PROGRAM}")
 endif()
 
+add_subdirectory(depends/libff)
+
 project(CryptoUtils)
 
 # detect operating system
@@ -71,8 +73,6 @@ if (ENABLE_COVERAGE AND CMAKE_COMPILER_IS_GNUCXX)
     setup_target_for_coverage(${PROJECT_NAME}_coverage ctest coverage "-j2;--output-on-failure")
 endif()
 
-link_directories(${PROJECT_SOURCE_DIR}/deps/libff/install/lib)
-
 # Build shared libraries by default.
 if (NOT CRYPTOUTILS_BUILD_ARCHIVE)
     message(STATUS "Building shared library ...")
@@ -82,10 +82,8 @@ else()
     add_library(CryptoUtils STATIC)
 endif()
 
-include_directories(
-    ${PROJECT_SOURCE_DIR}/include
-    ${PROJECT_SOURCE_DIR}/deps/libff/install/include
-)
+include_directories(${PROJECT_SOURCE_DIR}/include)
+
 add_subdirectory(lib/ethash)
 add_subdirectory(lib/Snark)
 

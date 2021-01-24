@@ -8,4 +8,5 @@ target_sources(CryptoUtils PUBLIC
     Snark.cpp
 )
 
+target_include_directories(CryptoUtils SYSTEM PUBLIC ${PROJECT_SOURCE_DIR}/depends/libff)
 target_link_libraries(CryptoUtils ff)

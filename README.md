@@ -7,9 +7,8 @@ Clone this repository with all of its submodules
 
 Run `CMake` by providing a `CMAKE_INSTALL_PREFIX` argument to install it
 to a directory of your choice:
-  - `./build_libff.sh`
   - `mkdir -p build; cd build`
-  - `cmake ../ -DCMAKE_INSTALL_PREFIX`
+  - `cmake ../ -DWITH_PROCPS=OFF -DCMAKE_POSITION_INDEPENDENT_CODE=1 -DCMAKE_INSTALL_PREFIX=../install`
   - `make install`
   
 Alternatively, run the provided `build.sh` script. The project will be built in `build/`
