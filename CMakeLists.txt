@@ -6,7 +6,14 @@ if(CCACHE_PROGRAM)
     set_property(GLOBAL PROPERTY RULE_LAUNCH_COMPILE "${CCACHE_PROGRAM}")
 endif()
 
-add_subdirectory(depends/libff)
+function(build_libff)
+  set(CMAKE_POLICY_DEFAULT_CMP0077 NEW)
+  set(WITH_PROCPS Off)
+  set(CMAKE_POSITION_INDEPENDENT_CODE true)
+  add_subdirectory(depends/libff)
+endfunction()
+
+build_libff()
 
 project(CryptoUtils)
 
@@ -74,6 +81,8 @@ if (ENABLE_COVERAGE AND CMAKE_COMPILER_IS_GNUCXX)
 endif()
 
 # Build shared libraries by default.
+option(CRYPTOUTILS_BUILD_ARCHIVE "Build static library (archive)"
+       Off)
 if (NOT CRYPTOUTILS_BUILD_ARCHIVE)
     message(STATUS "Building shared library ...")
     add_library(CryptoUtils SHARED)
