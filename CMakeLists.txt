@@ -10,6 +10,7 @@ function(build_libff)
   set(CMAKE_POLICY_DEFAULT_CMP0077 NEW)
   set(WITH_PROCPS Off)
   set(CMAKE_POSITION_INDEPENDENT_CODE true)
+  add_compile_options(-Wno-error)
   add_subdirectory(depends/libff)
 endfunction()
 
