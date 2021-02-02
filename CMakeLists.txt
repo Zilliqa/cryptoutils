@@ -93,7 +93,6 @@ else()
     set_target_properties(CryptoUtils PROPERTIES POSITION_INDEPENDENT_CODE True)
 endif()
 
-include_directories(${PROJECT_SOURCE_DIR}/include)
 
 add_subdirectory(lib/ethash)
 add_subdirectory(lib/Snark)
@@ -101,12 +100,6 @@ add_subdirectory(lib/Snark)
 install(
     TARGETS CryptoUtils
     DESTINATION ${CMAKE_INSTALL_PREFIX}/lib
-)
-
-install(
-    DIRECTORY ${CMAKE_SOURCE_DIR}/include
-    DESTINATION ${CMAKE_INSTALL_PREFIX}
-    USE_SOURCE_PERMISSIONS
 )
 
 # add clang-format and clang-tidy targets lastly
