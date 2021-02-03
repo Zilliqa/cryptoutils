@@ -97,6 +97,7 @@ include_directories(${PROJECT_SOURCE_DIR}/include)
 
 add_subdirectory(lib/ethash)
 add_subdirectory(lib/Snark)
+add_subdirectory(lib/Bech32)
 
 install(
     TARGETS CryptoUtils
