@@ -22,7 +22,8 @@
 #ifndef _SEGWIT_ADDR_H_
 #define _SEGWIT_ADDR_H_ 1
 
-#include <stdint.h>
+#include <cstdlib>
+#include <cstdint>
 
 /** Encode a SegWit address
  *
