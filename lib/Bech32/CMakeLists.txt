@@ -19,5 +19,5 @@ include(CMakePackageConfigHelpers)
 include(GNUInstallDirs)
 
 target_sources(CryptoUtils PUBLIC
-    segwit_addr.c
+    segwit_addr.cpp
 )
