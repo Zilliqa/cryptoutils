@@ -37,6 +37,9 @@ bytes alt_bn128_pairing_product(bytesConstRef in);
 // p1 is a 64 byte value (representing point (x, y)), and
 // s is a scalar, a 32 byte big-endian number
 bytes alt_bn128_G1_mul(bytesConstRef p1, bytesConstRef s);
+// multiply scalar to base point / generator of group
+// s is a scalar, a 32 byte big-endian number
+bytes alt_bn128_G1_bmul(bytesConstRef s);
 // p1 and p2 are 64 byte values, representing points (x, y),
 // where each of x and y are 32 byte big-endian numbers
 bytes alt_bn128_G1_add(bytesConstRef p1, bytesConstRef p2);
