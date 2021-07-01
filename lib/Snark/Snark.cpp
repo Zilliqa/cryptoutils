@@ -187,3 +187,13 @@ bytes alt_bn128_G1_mul(bytesConstRef _p1, bytesConstRef _s)
   libff::alt_bn128_G1 const result = toLibsnarkBigint(_s) * p;
   return encodePointG1(result);
 }
+
+bytes alt_bn128_G1_neg(bytesConstRef _p)
+{
+  if (_p.size() != 64)
+    throw SnarkExn("Snark: alt_bn128_G1_neg: Invalid input");
+
+  initLibSnark();
+  libff::alt_bn128_G1 const p = decodePointG1(_p);
+  return encodePointG1(-p);
+}

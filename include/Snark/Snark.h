@@ -40,3 +40,5 @@ bytes alt_bn128_G1_mul(bytesConstRef p1, bytesConstRef s);
 // p1 and p2 are 64 byte values, representing points (x, y),
 // where each of x and y are 32 byte big-endian numbers
 bytes alt_bn128_G1_add(bytesConstRef p1, bytesConstRef p2);
+// p is a 64 byte value (representing point (x, y))
+bytes alt_bn128_G1_neg(bytesConstRef p);
