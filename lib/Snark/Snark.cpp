@@ -196,6 +196,7 @@ bytes alt_bn128_G1_bmul(bytesConstRef _s) {
   libff::alt_bn128_G1 const p = libff::alt_bn128_G1::one();
   libff::alt_bn128_G1 const result = toLibsnarkBigint(_s) * p;
   return encodePointG1(result);
+}
 
 bytes alt_bn128_G1_neg(bytesConstRef _p)
 {
