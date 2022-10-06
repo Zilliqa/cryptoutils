@@ -6,6 +6,8 @@ if(CCACHE_PROGRAM)
     set_property(GLOBAL PROPERTY RULE_LAUNCH_COMPILE "${CCACHE_PROGRAM}")
 endif()
 
+project(CryptoUtils)
+
 function(build_libff)
   set(CMAKE_POLICY_DEFAULT_CMP0077 NEW)
   set(WITH_PROCPS Off)
@@ -15,8 +17,6 @@ function(build_libff)
 endfunction()
 
 build_libff()
-
-project(CryptoUtils)
 
 # detect operating system
 message(STATUS "We are on a ${CMAKE_SYSTEM_NAME} system")
