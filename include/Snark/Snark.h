@@ -18,8 +18,8 @@
 #include <vector>
 #include <string>
 
-typedef std::vector<uint8_t> bytes;
-typedef const bytes& bytesConstRef;
+typedef std::vector<uint8_t> zbytes;
+typedef const zbytes& zbytesConstRef;
 
 
 struct SnarkExn {
@@ -33,12 +33,12 @@ struct SnarkExn {
 // where each ai and bi are points on an elliptic curve 
 // and the function will return 1 or 0 (as 32 byte big-endian)
 //  depending on whether the pairing check succeeds or fails.
-bytes alt_bn128_pairing_product(bytesConstRef in);
+zbytes alt_bn128_pairing_product(zbytesConstRef in);
 // p1 is a 64 byte value (representing point (x, y)), and
 // s is a scalar, a 32 byte big-endian number
-bytes alt_bn128_G1_mul(bytesConstRef p1, bytesConstRef s);
+zbytes alt_bn128_G1_mul(zbytesConstRef p1, zbytesConstRef s);
 // p1 and p2 are 64 byte values, representing points (x, y),
 // where each of x and y are 32 byte big-endian numbers
-bytes alt_bn128_G1_add(bytesConstRef p1, bytesConstRef p2);
+zbytes alt_bn128_G1_add(zbytesConstRef p1, zbytesConstRef p2);
 // p is a 64 byte value (representing point (x, y))
-bytes alt_bn128_G1_neg(bytesConstRef p);
+zbytes alt_bn128_G1_neg(zbytesConstRef p);

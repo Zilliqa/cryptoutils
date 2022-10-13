@@ -14,21 +14,21 @@ namespace
 {
 
 /// Concatenate the contents of a container onto a vector
-bytes operator+(bytesConstRef _a, bytesConstRef _b)
+zbytes operator+(zbytesConstRef _a, zbytesConstRef _b)
 {
-  bytes c(_a.begin(), _a.end());
+  zbytes c(_a.begin(), _a.end());
   c.insert(c.end(), _b.begin(), _b.end());
   return c;
 }
 
 // Create a copy of b from "from" to "to".
 // TODO: Use a custom data structure that can create reference for the sub array.
-//       (that's what the aleth implementation's bytesConstRef::cropped() does).
-bytes splice(bytesConstRef b, size_t from, size_t to)
+//       (that's what the aleth implementation's zbytesConstRef::cropped() does).
+zbytes splice(zbytesConstRef b, size_t from, size_t to)
 {
   if (to > b.size() || from > to)
     throw SnarkExn ("Snark: splice: Invalid arguments");
-  bytes r (b.begin() + from, b.begin() + to);
+  zbytes r (b.begin() + from, b.begin() + to);
   return r;
 }
 
@@ -44,7 +44,7 @@ void initLibSnark() noexcept
   (void)s_initialized;
 }
 
-libff::bigint<libff::alt_bn128_q_limbs> toLibsnarkBigint(bytesConstRef _x)
+libff::bigint<libff::alt_bn128_q_limbs> toLibsnarkBigint(zbytesConstRef _x)
 {
   libff::bigint<libff::alt_bn128_q_limbs> b;
   auto const N = b.N;
@@ -56,19 +56,19 @@ libff::bigint<libff::alt_bn128_q_limbs> toLibsnarkBigint(bytesConstRef _x)
   return b;
 }
 
-bytes fromLibsnarkBigint(libff::bigint<libff::alt_bn128_q_limbs> const& _b)
+zbytes fromLibsnarkBigint(libff::bigint<libff::alt_bn128_q_limbs> const& _b)
 {
   static size_t const N = static_cast<size_t>(_b.N);
   static size_t const L = sizeof(_b.data[0]);
   static_assert(sizeof(mp_limb_t) == L, "Unexpected limb size in libff::bigint.");
-  bytes x(32);
+  zbytes x(32);
   for (size_t i = 0; i < N; i++)
     for (size_t j = 0; j < L; j++)
       x[i * L + j] = uint8_t(_b.data[N - 1 - i] >> (8 * (L - 1 - j)));
   return x;
 }
 
-libff::alt_bn128_Fq decodeFqElement(bytesConstRef _data)
+libff::alt_bn128_Fq decodeFqElement(zbytesConstRef _data)
 {
   if (_data.size() != 32)
     throw SnarkExn ("Snark: decodeFqElement: Invalid input");
@@ -82,7 +82,7 @@ libff::alt_bn128_Fq decodeFqElement(bytesConstRef _data)
   return toLibsnarkBigint(_data);
 }
 
-libff::alt_bn128_G1 decodePointG1(bytesConstRef _data)
+libff::alt_bn128_G1 decodePointG1(zbytesConstRef _data)
 {
   libff::alt_bn128_Fq x = decodeFqElement(splice(_data,0, 32));
   libff::alt_bn128_Fq y = decodeFqElement(splice(_data, 32, 64));
@@ -94,16 +94,16 @@ libff::alt_bn128_G1 decodePointG1(bytesConstRef _data)
   return p;
 }
 
-bytes encodePointG1(libff::alt_bn128_G1 _p)
+zbytes encodePointG1(libff::alt_bn128_G1 _p)
 {
   if (_p.is_zero())
-    return bytes(64, 0);
+    return zbytes(64, 0);
   _p.to_affine_coordinates();
   return
     fromLibsnarkBigint(_p.X.as_bigint()) + fromLibsnarkBigint(_p.Y.as_bigint());
 }
 
-libff::alt_bn128_Fq2 decodeFq2Element(bytesConstRef _data)
+libff::alt_bn128_Fq2 decodeFq2Element(zbytesConstRef _data)
 {
   // Encoding: c1 (256 bits) c0 (256 bits)
   // "Big endian", just like the numbers
@@ -113,7 +113,7 @@ libff::alt_bn128_Fq2 decodeFq2Element(bytesConstRef _data)
   );
 }
 
-libff::alt_bn128_G2 decodePointG2(bytesConstRef _data)
+libff::alt_bn128_G2 decodePointG2(zbytesConstRef _data)
 {
   libff::alt_bn128_Fq2 const x = decodeFq2Element(splice(_data, 0, 64));
   libff::alt_bn128_Fq2 const y = decodeFq2Element(splice(_data, 64, 128));
@@ -128,7 +128,7 @@ libff::alt_bn128_G2 decodePointG2(bytesConstRef _data)
 }
 
 // _in is a list of pairs. Each pair is of size 2*32 + 2*64.
-bytes alt_bn128_pairing_product(bytesConstRef _in)
+zbytes alt_bn128_pairing_product(zbytesConstRef _in)
 {
   // Input: list of pairs of G1 and G2 points
   // Output: 1 if pairing evaluates to 1, 0 otherwise (left-padded to 32 bytes)
@@ -143,7 +143,7 @@ bytes alt_bn128_pairing_product(bytesConstRef _in)
   libff::alt_bn128_Fq12 x = libff::alt_bn128_Fq12::one();
   for (size_t i = 0; i < pairs; ++i)
   {
-    bytesConstRef pair = splice(_in, i * pairSize, (i * pairSize) + pairSize);
+    zbytesConstRef pair = splice(_in, i * pairSize, (i * pairSize) + pairSize);
     libff::alt_bn128_G1 const g1 = decodePointG1(splice(pair, 0, 2 * 32));
     libff::alt_bn128_G2 const p = decodePointG2(splice(pair, 2 * 32, 2 * 32 + 2 * 64));
     if (-libff::alt_bn128_G2::scalar_field::one() * p + p != libff::alt_bn128_G2::zero())
@@ -157,7 +157,7 @@ bytes alt_bn128_pairing_product(bytesConstRef _in)
     );
   }
 
-  bytes ret(32, 0);
+  zbytes ret(32, 0);
   if (libff::alt_bn128_final_exponentiation(x) == libff::alt_bn128_GT::one()) {
     ret[31] = 1; // big-endian 1.
     return ret;
@@ -166,7 +166,7 @@ bytes alt_bn128_pairing_product(bytesConstRef _in)
   }
 }
 
-bytes alt_bn128_G1_add(bytesConstRef _p1, bytesConstRef _p2)
+zbytes alt_bn128_G1_add(zbytesConstRef _p1, zbytesConstRef _p2)
 {
   if (_p1.size() != 64 || _p2.size() != 64)
     throw SnarkExn("Snark: alt_bn128_G1_add: Invalid input");
@@ -177,7 +177,7 @@ bytes alt_bn128_G1_add(bytesConstRef _p1, bytesConstRef _p2)
   return encodePointG1(p1 + p2);
 }
 
-bytes alt_bn128_G1_mul(bytesConstRef _p1, bytesConstRef _s)
+zbytes alt_bn128_G1_mul(zbytesConstRef _p1, zbytesConstRef _s)
 {
   if (_p1.size() != 64 || _s.size() != 32)
     throw SnarkExn("Snark: alt_bn128_G1_mul: Invalid input");
@@ -188,7 +188,7 @@ bytes alt_bn128_G1_mul(bytesConstRef _p1, bytesConstRef _s)
   return encodePointG1(result);
 }
 
-bytes alt_bn128_G1_neg(bytesConstRef _p)
+zbytes alt_bn128_G1_neg(zbytesConstRef _p)
 {
   if (_p.size() != 64)
     throw SnarkExn("Snark: alt_bn128_G1_neg: Invalid input");
