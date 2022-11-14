@@ -34,3 +34,6 @@
 # Build and install directories
 build/
 install/
+vcpkg-registry/
+vcpkg-configuration.json
+vcpkg.json
